@@ -38,3 +38,17 @@ function waitForLoading() {
         });
     })
 }
+
+function isBlacklisted(companyId) {
+    return new Promise(resolve => {
+        chrome.runtime.sendMessage({
+            action: Action.CHECK_BLOCKLISTED,
+            companyId
+        }, (response) => {
+            const { isBlacklisted: _isBlacklisted } = response;
+
+            resolve(_isBlacklisted)
+        });
+    });
+
+}
