@@ -14,7 +14,7 @@ const Action = {
             const jobCard = jobPoster.querySelector('[data-cy="job-card"]');
             const cardAnchor = jobCard.querySelector('a');
 
-            const companyId = +cardAnchor.dataset['companyId'];
+            const companyId = cardAnchor.dataset['companyId'];
             const companyName = cardAnchor.dataset['companyName'];
             const jobTitle = cardAnchor.dataset['positionName'];
 
@@ -109,11 +109,11 @@ function _createBlacklistAddButton(
     blocklistAddButton.addEventListener('click', async function (event) {
         event.preventDefault();
 
-        await addToBlacklist({
-            id: companyId,
-            name: companyName,
+        await addToBlacklist(
+            companyId,
+            companyName,
             jobTitle
-        });
+        );
     });
 
     divisionContainer.appendChild(blocklistAddButton);

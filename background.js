@@ -29,13 +29,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 break;
             case Action.NEW_BLACKLISTED_COMPANY:
 
-                const newBlacklistedCompany = {
-                    id: companyId,
-                    name: companyName
-                };
-
                 const result = await addToBlacklist(
-                    newBlacklistedCompany,
+                    {
+                        id: companyId,
+                        name: companyName
+                    },
                     jobTitle
                 );
 
@@ -126,7 +124,7 @@ async function addToBlacklist(
         vendor: Vendor.WANTED,
         id: blacklistedCompany.id,
         name: blacklistedCompany.name,
-        boardTitle: jobTitle,
+        jobTitle,
         created
     };
 
