@@ -23,7 +23,11 @@ const Action = {
             if (isBlacklistedCompany) {
                 removeBlackCompanyCard(jobCard);
             } else {
-                const blockListAddDiv = _createBlacklistAddButton();
+                const blockListAddDiv = _createBlacklistAddButton(
+                    companyId,
+                    companyName,
+                    jobTitle
+                );
                 cardAnchor.appendChild(blockListAddDiv);
             }
         })
@@ -82,7 +86,11 @@ function removeBlackCompanyCard(jobCard) {
     jobCardParent.removeChild(jobCard);
 }
 
-function _createBlacklistAddButton() {
+function _createBlacklistAddButton(
+    companyId,
+    companyName,
+    jobTitle
+) {
 
     const divisionContainer = document.createElement('div');
     divisionContainer.style.width = '100%';
@@ -100,6 +108,12 @@ function _createBlacklistAddButton() {
 
     blocklistAddButton.addEventListener('click', async function (event) {
         event.preventDefault();
+
+        await addToBlacklist({
+            id: companyId,
+            name: companyName,
+            jobTitle
+        });
     });
 
     divisionContainer.appendChild(blocklistAddButton);
