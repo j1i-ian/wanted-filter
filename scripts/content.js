@@ -14,10 +14,12 @@ const Action = {
             const cardAnchor = jobCard.querySelector('a');
 
             const companyId = +cardAnchor.dataset['companyId'];
-            const companyName = cardAnchor.dataset['companyName'];
 
-            console.log(companyId);
-            console.log(companyName);
+            const isBlacklistedCompany = await isBlacklisted(companyId);
+
+            if (isBlacklistedCompany) {
+                removeBlackCompanyCard(jobCard);
+            }
         })
     )
 })();

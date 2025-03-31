@@ -14,8 +14,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
         switch (request.action) {
             case Action.CHECK_BLOCKLISTED:
-                console.log('companyId is retrieved:', companyId)
-                sendResponse({ isBlacklisted: true });
+                const isBlacklisted = await isBlackListedCompany(companyId);
+
+                sendResponse({ isBlacklisted });
                 break;
             default:
                 console.error('Unknown action');
