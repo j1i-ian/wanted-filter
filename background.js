@@ -1,4 +1,4 @@
-
+const INDEXED_DB_VERSION = 1;
 const APP_DATABASE_NAME = 'wantedFilterDatabase'
 const BLACKLIST_COMPANY_STORE_KEY = 'blacklistCompanyStore'
 
@@ -34,7 +34,7 @@ async function isBlackListedCompany(companyId) {
 
     const result = await new Promise(resolve => {
 
-        const request = indexedDB.open(APP_DATABASE_NAME, 1);
+        const request = indexedDB.open(APP_DATABASE_NAME, INDEXED_DB_VERSION);
 
         request.onupgradeneeded = function (_event) {
             const _db = _event.target.result;
