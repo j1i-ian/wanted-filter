@@ -19,6 +19,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 break;
             default:
                 console.error('Unknown action');
+
+                throw new Error('Unknown Action is detected');
                 break;
         }
     })();
