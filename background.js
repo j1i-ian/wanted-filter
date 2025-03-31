@@ -3,7 +3,8 @@ const APP_DATABASE_NAME = 'wantedFilterDatabase'
 const BLACKLIST_COMPANY_STORE_KEY = 'blacklistCompanyStore'
 
 const Action = {
-    CHECK_BLOCKLISTED: 'CHECK_BLOCKLISTED'
+    CHECK_BLOCKLISTED: 'CHECK_BLOCKLISTED',
+    NEW_BLACKLISTED_COMPANY: 'NEW_BLACKLISTED_COMPANY'
 };
 
 const Vendor = {
