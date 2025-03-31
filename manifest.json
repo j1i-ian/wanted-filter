@@ -13,7 +13,8 @@
     "content_scripts": [
         {
             "matches": [
-                "https://wanted.co.kr/*"
+                "https://wanted.co.kr/*",
+                "https://www.wanted.co.kr/*"
             ],
             "js": [
                 "scripts/content.js"
