@@ -4,52 +4,47 @@ const Action = {
 };
 
 (async () => {
-    await waitForLoading();
 
     const jobPostersContainer = document.querySelector('[data-cy="job-list"]')
-    const jobPosterList = Array.from(jobPostersContainer.children);
+    const jobPostersContainerObserver = new MutationObserver(async (mutations) => {
 
-    await Promise.allSettled(
-        jobPosterList.map(async jobPoster => {
-            const jobCard = jobPoster.querySelector('[data-cy="job-card"]');
-            const cardAnchor = jobCard.querySelector('a');
+        const allAddedJobPosters = mutations.filter(mutation => mutation.addedNodes.length > 0)
+            .reduce((acc, mutation) => acc.concat(Array.from(mutation.addedNodes)), [])
+            .filter(addedNode => addedNode.className.includes('Card_Card'));
 
-            const companyId = cardAnchor.dataset['companyId'];
-            const companyName = cardAnchor.dataset['companyName'];
-            const jobTitle = cardAnchor.dataset['positionName'];
+        await Promise.allSettled(
 
-            const isBlacklistedCompany = await isBlacklisted(companyId);
+            allAddedJobPosters.map(async jobPoster => {
+                const jobCard = jobPoster.querySelector('[data-cy="job-card"]');
+                const cardAnchor = jobCard.querySelector('a');
 
-            if (isBlacklistedCompany) {
-                removeBlackCompanyCard(jobCard);
-            } else {
-                const blockListAddDiv = _createBlacklistAddButton(
-                    companyId,
-                    companyName,
-                    jobTitle
-                );
-                cardAnchor.appendChild(blockListAddDiv);
-            }
-        })
-    )
+                const companyId = cardAnchor.dataset['companyId'];
+                const companyName = cardAnchor.dataset['companyName'];
+                const jobTitle = cardAnchor.dataset['positionName'];
+
+                const isBlacklistedCompany = await isBlacklisted(companyId);
+
+                if (isBlacklistedCompany) {
+                    removeBlackCompanyCard(jobCard);
+                } else {
+                    const blockListAddDiv = _createBlacklistAddButton(
+                        companyId,
+                        companyName,
+                        jobTitle
+                    );
+                    cardAnchor.appendChild(blockListAddDiv);
+                }
+            })
+        )
+    });
+
+    jobPostersContainerObserver.observe(jobPostersContainer, {
+        childList: true,
+        subtree: true,
+        attributes: false,
+        characterData: false
+    });
 })();
-
-function waitForLoading() {
-
-    return new Promise(resolve => {
-        const jobPostersContainer = document.querySelector('[data-cy="job-list"]')
-        const jobPostersContainerObserver = new MutationObserver((mutations, observer) => {
-            resolve(mutations);
-        });
-
-        jobPostersContainerObserver.observe(jobPostersContainer, {
-            childList: true,
-            subtree: true,
-            attributes: false,
-            characterData: false
-        });
-    })
-}
 
 function isBlacklisted(companyId) {
     return new Promise(resolve => {
@@ -115,9 +110,15 @@ function _createBlacklistAddButton(
             companyName,
             jobTitle
         );
+
+        removeAllBlacklistedJobPosters();
     });
 
     divisionContainer.appendChild(blocklistAddButton);
 
     return divisionContainer;
+}
+
+function removeAllBlacklistedJobPosters(card) {
+
 }
