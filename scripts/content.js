@@ -19,6 +19,9 @@ const Action = {
 
             if (isBlacklistedCompany) {
                 removeBlackCompanyCard(jobCard);
+            } else {
+                const blockListAddDiv = _createBlacklistAddButton();
+                cardAnchor.appendChild(blockListAddDiv);
             }
         })
     )
@@ -59,4 +62,29 @@ function removeBlackCompanyCard(jobCard) {
     const jobCardParent = jobCard.parentElement;
 
     jobCardParent.removeChild(jobCard);
+}
+
+function _createBlacklistAddButton() {
+
+    const divisionContainer = document.createElement('div');
+    divisionContainer.style.width = '100%';
+    divisionContainer.style.display = 'flex';
+    divisionContainer.style.justifyContent = 'center';
+    divisionContainer.style.margin = '1rem 0';
+
+    const tagListButtonCSSClasses = document.querySelector('button[aria-labelledby]').classList.value;
+
+    const blocklistAddButton = document.createElement('button');
+    blocklistAddButton.type = 'button';
+    blocklistAddButton.innerText = '숨기기';
+    blocklistAddButton.classList.value = tagListButtonCSSClasses;
+    blocklistAddButton.style.width = '100%';
+
+    blocklistAddButton.addEventListener('click', async function (event) {
+        event.preventDefault();
+    });
+
+    divisionContainer.appendChild(blocklistAddButton);
+
+    return divisionContainer;
 }
