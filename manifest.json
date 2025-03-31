@@ -1,0 +1,28 @@
+{
+    "name": "Wanted Filter",
+    "description": "Wanted Filter for filtering unwanted job posters",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "action": {
+        "default_popup": "popup/popup.html"
+    },
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://wanted.co.kr/*"
+            ],
+            "js": [
+                "scripts/content.js"
+            ]
+        }
+    ],
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "storage"
+    ]
+}
