@@ -1,3 +1,7 @@
+const Action = {
+    CHECK_BLOCKLISTED: 'CHECK_BLOCKLISTED'
+};
+
 (async () => {
     await waitForLoading();
 
