@@ -4,7 +4,11 @@ const BLACKLIST_COMPANY_STORE_KEY = 'blacklistCompanyStore'
 
 const Action = {
     CHECK_BLOCKLISTED: 'CHECK_BLOCKLISTED'
-}
+};
+
+const Vendor = {
+    WANTED: 'wanted'
+};
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
