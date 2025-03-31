@@ -96,3 +96,63 @@ async function isBlackListedCompany(companyId) {
 
     return result;
 }
+
+async function addToBlacklist(
+    blacklistedCompany,
+    jobTitle
+) {
+    const created = new Date();
+    const blacklistedCompanyEntity = {
+        vendor: Vendor.WANTED,
+        id: blacklistedCompany.id,
+        name: blacklistedCompany.name,
+        boardTitle: jobTitle,
+        created
+    };
+
+    try {
+
+        await _saveToIndexedDB(blacklistedCompanyEntity)
+
+        return true;
+    } catch (error) {
+        console.error('error on ', blacklistedCompany);
+
+        return false;
+    }
+}
+
+function _saveToIndexedDB(data) {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(APP_DATABASE_NAME, INDEXED_DB_VERSION);
+
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+
+            const hasStoreKey = db.objectStoreNames.contains(BLACKLIST_COMPANY_STORE_KEY)
+            if (
+                hasStoreKey !== undefined
+            ) {
+                db.createObjectStore(BLACKLIST_COMPANY_STORE_KEY, {
+                    keyPath: 'id',
+                    autoIncrement: true
+                });
+            }
+        };
+
+        request.onsuccess = (event) => {
+            const db = event.target.result;
+            const tx = db.transaction(
+                BLACKLIST_COMPANY_STORE_KEY,
+                "readwrite"
+            );
+            const store = tx.objectStore(BLACKLIST_COMPANY_STORE_KEY);
+            const addRequest = store.add(data);
+            addRequest.onsuccess = () => resolve({ success: true, data });
+            addRequest.onerror = (event) => reject(event.target.error);
+        };
+
+        request.onerror = (event) => reject(event.target.error);
+    });
+
+}
