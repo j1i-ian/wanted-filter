@@ -111,7 +111,7 @@ function _createBlacklistAddButton(
             jobTitle
         );
 
-        removeAllBlacklistedJobPosters();
+        removeAllBlacklistedJobPosters(companyId);
     });
 
     divisionContainer.appendChild(blocklistAddButton);
@@ -119,6 +119,14 @@ function _createBlacklistAddButton(
     return divisionContainer;
 }
 
-function removeAllBlacklistedJobPosters(card) {
+function removeAllBlacklistedJobPosters(companyId) {
+    const allNewBlacklistedJobPosterAnchors = Array.from(
+        document.querySelectorAll(`a[data-company-id="${companyId}"]`)
+    );
 
+    allNewBlacklistedJobPosterAnchors.forEach(jobAnchor => {
+        const jobCard = jobAnchor.parentElement;
+
+        removeBlackCompanyCard(jobCard);
+    });
 }
