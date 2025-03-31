@@ -15,13 +15,32 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     (async () => {
 
-        const { companyId } = request;
+        const {
+            companyId,
+            companyName,
+            jobTitle
+        } = request;
 
         switch (request.action) {
             case Action.CHECK_BLOCKLISTED:
                 const isBlacklisted = await isBlackListedCompany(companyId);
 
                 sendResponse({ isBlacklisted });
+                break;
+            case Action.NEW_BLACKLISTED_COMPANY:
+
+                const newBlacklistedCompany = {
+                    id: companyId,
+                    name: companyName
+                };
+
+                const result = await addToBlacklist(
+                    newBlacklistedCompany,
+                    jobTitle
+                );
+
+                sendResponse({ result });
+
                 break;
             default:
                 console.error('Unknown action');
