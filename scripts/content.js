@@ -52,3 +52,9 @@ function isBlacklisted(companyId) {
     });
 
 }
+
+function removeBlackCompanyCard(jobCard) {
+    const jobCardParent = jobCard.parentElement;
+
+    jobCardParent.removeChild(jobCard);
+}
