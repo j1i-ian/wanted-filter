@@ -81,9 +81,10 @@ function addToBlacklist(companyId, companyName, jobTitle) {
 }
 
 function removeBlackCompanyCard(jobCard) {
-    const jobCardParent = jobCard.parentElement;
+    const jobCardContainer = jobCard.parentElement;
+    const jobList = jobCardContainer.parentElement;
 
-    jobCardParent.removeChild(jobCard);
+    jobList.removeChild(jobCardContainer);
 }
 
 function _createBlacklistAddButton(
