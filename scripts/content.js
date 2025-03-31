@@ -15,6 +15,8 @@ const Action = {
             const cardAnchor = jobCard.querySelector('a');
 
             const companyId = +cardAnchor.dataset['companyId'];
+            const companyName = cardAnchor.dataset['companyName'];
+            const jobTitle = cardAnchor.dataset['positionName'];
 
             const isBlacklistedCompany = await isBlacklisted(companyId);
 
@@ -57,6 +59,21 @@ function isBlacklisted(companyId) {
         });
     });
 
+}
+
+function addToBlacklist(companyId, companyName, jobTitle) {
+    return new Promise(resolve => {
+        chrome.runtime.sendMessage({
+            action: Action.NEW_BLACKLISTED_COMPANY,
+            companyId,
+            companyName,
+            jobTitle
+        }, (response) => {
+            const { success: __success } = response;
+
+            resolve(__success)
+        });
+    });
 }
 
 function removeBlackCompanyCard(jobCard) {
